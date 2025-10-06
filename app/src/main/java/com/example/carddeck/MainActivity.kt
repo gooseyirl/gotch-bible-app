@@ -1,10 +1,12 @@
 package com.example.carddeck
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -12,12 +14,17 @@ import com.google.android.material.button.MaterialButton
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var rootLayout: ConstraintLayout
+    private lateinit var menuLayout: LinearLayout
+    private lateinit var workoutLayout: ConstraintLayout
+    private lateinit var startButton: MaterialButton
+    private lateinit var pastWorkoutsButton: MaterialButton
+    private lateinit var settingsButton: MaterialButton
+
     private lateinit var cardDisplay: TextView
     private lateinit var timerText: TextView
     private lateinit var progressText: TextView
     private lateinit var instructionText: TextView
-    private lateinit var shuffleButton: MaterialButton
+    private lateinit var backToMenuButton: MaterialButton
     private val deckManager = DeckManager()
 
     private var shuffledCards: List<Card> = emptyList()
@@ -42,27 +49,60 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        rootLayout = findViewById(R.id.rootLayout)
+        // Menu views
+        menuLayout = findViewById(R.id.menuLayout)
+        startButton = findViewById(R.id.startButton)
+        pastWorkoutsButton = findViewById(R.id.pastWorkoutsButton)
+        settingsButton = findViewById(R.id.settingsButton)
+
+        // Workout views
+        workoutLayout = findViewById(R.id.workoutLayout)
         cardDisplay = findViewById(R.id.cardDisplay)
         timerText = findViewById(R.id.timerText)
         progressText = findViewById(R.id.progressText)
         instructionText = findViewById(R.id.instructionText)
-        shuffleButton = findViewById(R.id.shuffleButton)
+        backToMenuButton = findViewById(R.id.backToMenuButton)
 
         setupClickListeners()
-        startNewDeck()
     }
 
     private fun setupClickListeners() {
-        rootLayout.setOnClickListener {
+        startButton.setOnClickListener {
+            showWorkoutScreen()
+            startNewDeck()
+        }
+
+        pastWorkoutsButton.setOnClickListener {
+            val intent = Intent(this, PastWorkoutsActivity::class.java)
+            startActivity(intent)
+        }
+
+        settingsButton.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
+
+        workoutLayout.setOnClickListener {
             if (currentCardIndex < shuffledCards.size) {
                 showNextCard()
             }
         }
 
-        shuffleButton.setOnClickListener {
-            startNewDeck()
+        backToMenuButton.setOnClickListener {
+            showMenuScreen()
         }
+    }
+
+    private fun showMenuScreen() {
+        isTimerRunning = false
+        handler.removeCallbacks(timerRunnable)
+        menuLayout.visibility = View.VISIBLE
+        workoutLayout.visibility = View.GONE
+    }
+
+    private fun showWorkoutScreen() {
+        menuLayout.visibility = View.GONE
+        workoutLayout.visibility = View.VISIBLE
     }
 
     private fun startNewDeck() {
@@ -73,7 +113,7 @@ class MainActivity : AppCompatActivity() {
         timerText.text = "00:00.0"
         handler.post(timerRunnable)
         displayCurrentCard()
-        instructionText.visibility = View.VISIBLE
+        instructionText.text = "Tap anywhere to see next card"
     }
 
     private fun showNextCard() {
@@ -83,7 +123,7 @@ class MainActivity : AppCompatActivity() {
         } else if (currentCardIndex == shuffledCards.size - 1) {
             // Show last card and stop timer
             isTimerRunning = false
-            instructionText.text = "Complete! Tap Start Over to try again"
+            instructionText.text = "Complete! Tap Back to Menu"
         }
     }
 
