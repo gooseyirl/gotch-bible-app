@@ -123,12 +123,22 @@ class MainActivity : AppCompatActivity() {
         } else if (currentCardIndex == shuffledCards.size - 1) {
             // Show last card and stop timer
             isTimerRunning = false
-            instructionText.text = "Complete! Tap Back to Menu"
+            val elapsedMillis = System.currentTimeMillis() - startTime
+            val seconds = (elapsedMillis / 1000) % 60
+            val minutes = (elapsedMillis / 1000) / 60
+            val timeString = String.format("%02d:%02d", minutes, seconds)
+            instructionText.text = "Congratulations! You completed the deck in $timeString!"
         }
     }
 
     private fun displayCurrentCard() {
         val card = shuffledCards[currentCardIndex]
+
+        // Animate card transition
+        cardDisplay.alpha = 0f
+        cardDisplay.scaleX = 0.8f
+        cardDisplay.scaleY = 0.8f
+
         cardDisplay.text = card.toString()
 
         // Set card color
@@ -139,6 +149,14 @@ class MainActivity : AppCompatActivity() {
         cardDisplay.setTextColor(textColor)
 
         progressText.text = "Card ${currentCardIndex + 1} of ${shuffledCards.size}"
+
+        // Fade in and scale animation
+        cardDisplay.animate()
+            .alpha(1f)
+            .scaleX(1f)
+            .scaleY(1f)
+            .setDuration(200)
+            .start()
     }
 
     override fun onDestroy() {
