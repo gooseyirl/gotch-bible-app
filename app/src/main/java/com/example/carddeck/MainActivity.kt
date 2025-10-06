@@ -1,5 +1,6 @@
 package com.example.carddeck
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -23,6 +24,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cardDisplay: TextView
     private lateinit var timerText: TextView
     private lateinit var progressText: TextView
+    private lateinit var exerciseText: TextView
+    private lateinit var summaryText: TextView
     private lateinit var instructionText: TextView
     private lateinit var backToMenuButton: MaterialButton
     private val deckManager = DeckManager()
@@ -32,6 +35,9 @@ class MainActivity : AppCompatActivity() {
     private var startTime: Long = 0
     private var isTimerRunning = false
     private val handler = Handler(Looper.getMainLooper())
+
+    // Track reps per exercise
+    private val repCounts = mutableMapOf<Card.Suit, Int>()
     private val timerRunnable = object : Runnable {
         override fun run() {
             if (isTimerRunning) {
@@ -60,6 +66,8 @@ class MainActivity : AppCompatActivity() {
         cardDisplay = findViewById(R.id.cardDisplay)
         timerText = findViewById(R.id.timerText)
         progressText = findViewById(R.id.progressText)
+        exerciseText = findViewById(R.id.exerciseText)
+        summaryText = findViewById(R.id.summaryText)
         instructionText = findViewById(R.id.instructionText)
         backToMenuButton = findViewById(R.id.backToMenuButton)
 
@@ -112,27 +120,83 @@ class MainActivity : AppCompatActivity() {
         isTimerRunning = true
         timerText.text = "00:00.0"
         handler.post(timerRunnable)
+
+        // Reset rep counts
+        repCounts.clear()
+        Card.Suit.values().forEach { repCounts[it] = 0 }
+
+        // Reset UI
+        cardDisplay.visibility = View.VISIBLE
+        exerciseText.visibility = View.VISIBLE
+        summaryText.visibility = View.GONE
+        instructionText.visibility = View.VISIBLE
+
         displayCurrentCard()
         instructionText.text = "Tap anywhere to see next card"
     }
 
     private fun showNextCard() {
         if (currentCardIndex < shuffledCards.size - 1) {
+            // Track reps for current card before moving to next
+            val currentCard = shuffledCards[currentCardIndex]
+            repCounts[currentCard.suit] = repCounts[currentCard.suit]!! + currentCard.rank.value
+
             currentCardIndex++
             displayCurrentCard()
         } else if (currentCardIndex == shuffledCards.size - 1) {
-            // Show last card and stop timer
+            // Track reps for the last card
+            val currentCard = shuffledCards[currentCardIndex]
+            repCounts[currentCard.suit] = repCounts[currentCard.suit]!! + currentCard.rank.value
+
+            // Show completion summary and stop timer
             isTimerRunning = false
             val elapsedMillis = System.currentTimeMillis() - startTime
             val seconds = (elapsedMillis / 1000) % 60
             val minutes = (elapsedMillis / 1000) / 60
             val timeString = String.format("%02d:%02d", minutes, seconds)
-            instructionText.text = "Congratulations! You completed the deck in $timeString!"
+
+            // Hide card and exercise, show summary
+            cardDisplay.visibility = View.GONE
+            exerciseText.visibility = View.GONE
+            instructionText.visibility = View.GONE
+            summaryText.visibility = View.VISIBLE
+
+            // Build summary text
+            val prefs = getSharedPreferences("GotchBible", Context.MODE_PRIVATE)
+            val clubsExercise = prefs.getString("CLUBS", "Push-up") ?: "Push-up"
+            val heartsExercise = prefs.getString("HEARTS", "Squat") ?: "Squat"
+            val spadesExercise = prefs.getString("SPADES", "Sit-up") ?: "Sit-up"
+            val diamondsExercise = prefs.getString("DIAMONDS", "Burpee") ?: "Burpee"
+
+            val summary = """
+                Congratulations!
+                You completed the deck in $timeString!
+
+                Total Reps:
+                $clubsExercise: ${repCounts[Card.Suit.CLUBS]}
+                $heartsExercise: ${repCounts[Card.Suit.HEARTS]}
+                $spadesExercise: ${repCounts[Card.Suit.SPADES]}
+                $diamondsExercise: ${repCounts[Card.Suit.DIAMONDS]}
+            """.trimIndent()
+
+            summaryText.text = summary
         }
     }
 
     private fun displayCurrentCard() {
         val card = shuffledCards[currentCardIndex]
+
+        // Get exercise name from preferences
+        val prefs = getSharedPreferences("GotchBible", Context.MODE_PRIVATE)
+        val exerciseName = when (card.suit) {
+            Card.Suit.CLUBS -> prefs.getString("CLUBS", "Push-up") ?: "Push-up"
+            Card.Suit.HEARTS -> prefs.getString("HEARTS", "Squat") ?: "Squat"
+            Card.Suit.SPADES -> prefs.getString("SPADES", "Sit-up") ?: "Sit-up"
+            Card.Suit.DIAMONDS -> prefs.getString("DIAMONDS", "Burpee") ?: "Burpee"
+        }
+
+        // Update exercise text
+        exerciseText.text = "$exerciseName x ${card.rank.value}"
 
         // Animate card transition
         cardDisplay.alpha = 0f
