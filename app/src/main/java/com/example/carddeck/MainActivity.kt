@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private var currentCardIndex = 0
     private var startTime: Long = 0
     private var isTimerRunning = false
+    private var isCountdownRunning = false
     private val handler = Handler(Looper.getMainLooper())
 
     // Track reps per exercise
@@ -91,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         workoutLayout.setOnClickListener {
-            if (currentCardIndex < shuffledCards.size) {
+            if (!isCountdownRunning && currentCardIndex < shuffledCards.size) {
                 showNextCard()
             }
         }
@@ -116,23 +117,64 @@ class MainActivity : AppCompatActivity() {
     private fun startNewDeck() {
         shuffledCards = deckManager.shuffle()
         currentCardIndex = 0
-        startTime = System.currentTimeMillis()
-        isTimerRunning = true
         timerText.text = "00:00.0"
-        handler.post(timerRunnable)
 
         // Reset rep counts
         repCounts.clear()
         Card.Suit.values().forEach { repCounts[it] = 0 }
 
         // Reset UI
-        cardDisplay.visibility = View.VISIBLE
-        exerciseText.visibility = View.VISIBLE
         summaryText.visibility = View.GONE
-        instructionText.visibility = View.VISIBLE
+        instructionText.visibility = View.GONE
+        exerciseText.visibility = View.GONE
 
-        displayCurrentCard()
-        instructionText.text = "Tap anywhere to see next card"
+        // Start countdown
+        startCountdown()
+    }
+
+    private fun startCountdown() {
+        isCountdownRunning = true
+        cardDisplay.visibility = View.VISIBLE
+        cardDisplay.setTextColor(Color.BLACK)
+
+        var count = 3
+
+        fun showCount() {
+            if (count > 0) {
+                // Animate countdown number
+                cardDisplay.alpha = 0f
+                cardDisplay.scaleX = 0.5f
+                cardDisplay.scaleY = 0.5f
+                cardDisplay.text = count.toString()
+
+                cardDisplay.animate()
+                    .alpha(1f)
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(300)
+                    .withEndAction {
+                        handler.postDelayed({
+                            count--
+                            showCount()
+                        }, 700)
+                    }
+                    .start()
+            } else {
+                // Countdown finished, start workout
+                isCountdownRunning = false
+                startTime = System.currentTimeMillis()
+                isTimerRunning = true
+                handler.post(timerRunnable)
+
+                exerciseText.visibility = View.VISIBLE
+                instructionText.visibility = View.VISIBLE
+                instructionText.text = "Tap anywhere to see next card"
+
+                displayCurrentCard()
+            }
+        }
+
+        showCount()
     }
 
     private fun showNextCard() {
