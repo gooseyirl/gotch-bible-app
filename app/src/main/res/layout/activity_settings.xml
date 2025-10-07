@@ -42,14 +42,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:boxBackgroundMode="outline">
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/text_primary"
+            app:hintTextColor="@color/text_primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/clubsExerciseInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Exercise name"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/text_primary" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Hearts Exercise -->
@@ -65,14 +68,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:boxBackgroundMode="outline">
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/text_primary"
+            app:hintTextColor="@color/text_primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/heartsExerciseInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Exercise name"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/text_primary" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Spades Exercise -->
@@ -88,14 +94,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:boxBackgroundMode="outline">
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/text_primary"
+            app:hintTextColor="@color/text_primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/spadesExerciseInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Exercise name"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/text_primary" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Diamonds Exercise -->
@@ -111,14 +120,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            app:boxBackgroundMode="outline">
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/text_primary"
+            app:hintTextColor="@color/text_primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/diamondsExerciseInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Exercise name"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/text_primary" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
