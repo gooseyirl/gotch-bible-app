@@ -7,6 +7,7 @@ import android.media.SoundPool
 class SoundPlayer(context: Context) {
     private var soundPool: SoundPool
     private var clickSoundId: Int = -1
+    private var countdownSoundId: Int = -1
     private var celebrationSoundId: Int = -1
     private var loaded = false
 
@@ -17,7 +18,7 @@ class SoundPlayer(context: Context) {
             .build()
 
         soundPool = SoundPool.Builder()
-            .setMaxStreams(2)
+            .setMaxStreams(3)
             .setAudioAttributes(audioAttributes)
             .build()
 
@@ -37,6 +38,16 @@ class SoundPlayer(context: Context) {
             // Sound file not found, continue without it
         }
 
+        // Try to load countdown timer sound
+        try {
+            val countdownResId = context.resources.getIdentifier("countdown_timer", "raw", context.packageName)
+            if (countdownResId != 0) {
+                countdownSoundId = soundPool.load(context, countdownResId, 1)
+            }
+        } catch (e: Exception) {
+            // Sound file not found, continue without it
+        }
+
         // Try to load celebration sound
         try {
             val celebrationResId = context.resources.getIdentifier("celebration", "raw", context.packageName)
@@ -51,6 +62,12 @@ class SoundPlayer(context: Context) {
     fun playClick() {
         if (loaded && clickSoundId != -1) {
             soundPool.play(clickSoundId, 0.5f, 0.5f, 1, 0, 1.0f)
+        }
+    }
+
+    fun playCountdown() {
+        if (loaded && countdownSoundId != -1) {
+            soundPool.play(countdownSoundId, 0.5f, 0.5f, 1, 0, 1.0f)
         }
     }
 

@@ -158,8 +158,8 @@ class MainActivity : AppCompatActivity() {
 
         fun showCount() {
             if (count > 0) {
-                // Play click sound
-                soundPlayer.playClick()
+                // Play countdown sound
+                soundPlayer.playCountdown()
 
                 // Animate countdown number
                 cardDisplay.alpha = 0f
