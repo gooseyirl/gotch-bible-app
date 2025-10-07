@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     private var shuffledCards: List<Card> = emptyList()
     private var currentCardIndex = 0
+    private var highestCardReached = 0
     private var startTime: Long = 0
     private var pausedElapsedTime: Long = 0
     private var isTimerRunning = false
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity() {
 
     // Track reps per exercise
     private val repCounts = mutableMapOf<Card.Suit, Int>()
+    private val cardsCompleted = mutableSetOf<Int>()
     private val timerRunnable = object : Runnable {
         override fun run() {
             if (isTimerRunning) {
@@ -145,6 +147,7 @@ class MainActivity : AppCompatActivity() {
     private fun startNewDeck() {
         shuffledCards = deckManager.shuffle()
         currentCardIndex = 0
+        highestCardReached = 0
         isWorkoutComplete = false
         isWorkoutIncomplete = false
         timerText.text = "00:00.0"
@@ -152,11 +155,14 @@ class MainActivity : AppCompatActivity() {
         // Reset rep counts
         repCounts.clear()
         Card.Suit.values().forEach { repCounts[it] = 0 }
+        cardsCompleted.clear()
 
         // Reset UI
         summaryText.visibility = View.GONE
         instructionText.visibility = View.GONE
         exerciseText.visibility = View.GONE
+        backButton.visibility = View.VISIBLE
+        endButton.visibility = View.VISIBLE
 
         // Start countdown
         startCountdown()
@@ -219,19 +225,28 @@ class MainActivity : AppCompatActivity() {
 
     private fun showNextCard() {
         if (currentCardIndex < shuffledCards.size - 1) {
-            // Track reps for current card before moving to next
-            val currentCard = shuffledCards[currentCardIndex]
-            repCounts[currentCard.suit] = repCounts[currentCard.suit]!! + currentCard.rank.value
+            // Track reps for current card only if we haven't counted it yet
+            if (!cardsCompleted.contains(currentCardIndex)) {
+                val currentCard = shuffledCards[currentCardIndex]
+                repCounts[currentCard.suit] = repCounts[currentCard.suit]!! + currentCard.rank.value
+                cardsCompleted.add(currentCardIndex)
+            }
 
             // Play click sound
             soundPlayer.playClick()
 
             currentCardIndex++
+            if (currentCardIndex > highestCardReached) {
+                highestCardReached = currentCardIndex
+            }
             displayCurrentCard()
         } else if (currentCardIndex == shuffledCards.size - 1) {
-            // Track reps for the last card
-            val currentCard = shuffledCards[currentCardIndex]
-            repCounts[currentCard.suit] = repCounts[currentCard.suit]!! + currentCard.rank.value
+            // Track reps for the last card only if we haven't counted it yet
+            if (!cardsCompleted.contains(currentCardIndex)) {
+                val currentCard = shuffledCards[currentCardIndex]
+                repCounts[currentCard.suit] = repCounts[currentCard.suit]!! + currentCard.rank.value
+                cardsCompleted.add(currentCardIndex)
+            }
 
             // Mark workout as complete and stop timer
             isWorkoutComplete = true
@@ -246,6 +261,8 @@ class MainActivity : AppCompatActivity() {
             exerciseText.visibility = View.GONE
             instructionText.visibility = View.GONE
             summaryText.visibility = View.VISIBLE
+            backButton.visibility = View.GONE
+            endButton.visibility = View.GONE
 
             // Build summary text
             val prefs = getSharedPreferences("GotchBible", Context.MODE_PRIVATE)
@@ -383,6 +400,8 @@ class MainActivity : AppCompatActivity() {
         exerciseText.visibility = View.GONE
         instructionText.visibility = View.GONE
         summaryText.visibility = View.VISIBLE
+        backButton.visibility = View.GONE
+        endButton.visibility = View.GONE
 
         // Build summary text
         val prefs = getSharedPreferences("GotchBible", Context.MODE_PRIVATE)
@@ -394,7 +413,7 @@ class MainActivity : AppCompatActivity() {
         val summary = """
             Workout Ended
             Time: $timeString
-            Cards completed: $currentCardIndex of ${shuffledCards.size}
+            Cards completed: ${cardsCompleted.size} of ${shuffledCards.size}
 
             Total Reps:
             $clubsExercise: ${repCounts[Card.Suit.CLUBS]}
