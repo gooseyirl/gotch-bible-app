@@ -429,13 +429,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun showBackToMenuDialog() {
         if (!isWorkoutComplete) {
+            // Pause timer
+            isTimerRunning = false
+            pausedElapsedTime = System.currentTimeMillis() - startTime
+
             AlertDialog.Builder(this)
                 .setTitle("Back to Menu")
                 .setMessage("Are you sure you want to go back to the menu? Your current workout will not be saved.")
                 .setPositiveButton("Yes") { _, _ ->
                     showMenuScreen()
                 }
-                .setNegativeButton("No", null)
+                .setNegativeButton("No") { _, _ ->
+                    // Resume timer
+                    startTime = System.currentTimeMillis() - pausedElapsedTime
+                    isTimerRunning = true
+                    handler.post(timerRunnable)
+                }
+                .setCancelable(false)
                 .show()
         } else {
             showMenuScreen()
