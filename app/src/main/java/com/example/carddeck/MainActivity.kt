@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     private var startTime: Long = 0
     private var isTimerRunning = false
     private var isCountdownRunning = false
+    private var isWorkoutComplete = false
     private val handler = Handler(Looper.getMainLooper())
 
     // Track reps per exercise
@@ -92,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         workoutLayout.setOnClickListener {
-            if (!isCountdownRunning && currentCardIndex < shuffledCards.size) {
+            if (!isCountdownRunning && !isWorkoutComplete && currentCardIndex < shuffledCards.size) {
                 showNextCard()
             }
         }
@@ -117,6 +118,7 @@ class MainActivity : AppCompatActivity() {
     private fun startNewDeck() {
         shuffledCards = deckManager.shuffle()
         currentCardIndex = 0
+        isWorkoutComplete = false
         timerText.text = "00:00.0"
 
         // Reset rep counts
@@ -197,7 +199,8 @@ class MainActivity : AppCompatActivity() {
             val currentCard = shuffledCards[currentCardIndex]
             repCounts[currentCard.suit] = repCounts[currentCard.suit]!! + currentCard.rank.value
 
-            // Show completion summary and stop timer
+            // Mark workout as complete and stop timer
+            isWorkoutComplete = true
             isTimerRunning = false
             val elapsedMillis = System.currentTimeMillis() - startTime
             val seconds = (elapsedMillis / 1000) % 60
