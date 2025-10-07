@@ -1,12 +1,6 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.ajoberstar.reckon")
-}
-
-reckon {
-    scopeFromProp()
-    stageFromProp("beta", "rc", "final")
 }
 
 android {
@@ -18,7 +12,7 @@ android {
         minSdk = 24
         targetSdk = 34
 
-        val reckonVersion = project.version.toString()
+        val reckonVersion = rootProject.version.toString()
         versionName = reckonVersion
 
         // Generate versionCode from version string (e.g., 1.2.3 -> 10203)

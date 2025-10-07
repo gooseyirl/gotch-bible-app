@@ -2,12 +2,4 @@
 plugins {
     id("com.android.application") version "8.13.0" apply false
     id("org.jetbrains.kotlin.android") version "1.9.20" apply false
-    id("org.ajoberstar.reckon.settings") version "0.18.3"
-}
-
-extensions.configure<org.ajoberstar.reckon.gradle.ReckonExtension> {
-    setDefaultInferredScope("minor")
-    stages("beta", "rc", "final")
-    setScopeCalc(calcScopeFromProp())
-    setStageCalc(calcStageFromProp())
 }
