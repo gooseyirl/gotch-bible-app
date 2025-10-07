@@ -1,6 +1,12 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.ajoberstar.reckon")
+}
+
+reckon {
+    scopeFromProp()
+    stageFromProp("beta", "rc", "final")
 }
 
 android {
@@ -11,8 +17,15 @@ android {
         applicationId = "com.example.carddeck"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+
+        val reckonVersion = project.version.toString()
+        versionName = reckonVersion
+
+        // Generate versionCode from version string (e.g., 1.2.3 -> 10203)
+        val versionParts = reckonVersion.split(".", "-").take(3)
+        versionCode = versionParts.mapIndexed { index, part ->
+            part.toIntOrNull()?.let { it * Math.pow(100.0, (2 - index).toDouble()).toInt() } ?: 0
+        }.sum()
     }
 
     buildTypes {
