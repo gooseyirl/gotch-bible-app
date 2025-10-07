@@ -137,6 +137,10 @@ class MainActivity : AppCompatActivity() {
         cardDisplay.visibility = View.VISIBLE
         cardDisplay.setTextColor(Color.BLACK)
 
+        // Remove card background/border for countdown
+        cardDisplay.setBackgroundColor(Color.TRANSPARENT)
+        cardDisplay.elevation = 0f
+
         var count = 3
 
         fun showCount() {
@@ -160,8 +164,11 @@ class MainActivity : AppCompatActivity() {
                     }
                     .start()
             } else {
-                // Countdown finished, start workout
+                // Countdown finished, restore card styling and start workout
                 isCountdownRunning = false
+                cardDisplay.setBackgroundColor(Color.WHITE)
+                cardDisplay.elevation = 8f * resources.displayMetrics.density
+
                 startTime = System.currentTimeMillis()
                 isTimerRunning = true
                 handler.post(timerRunnable)
