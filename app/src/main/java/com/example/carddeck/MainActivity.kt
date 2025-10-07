@@ -1,6 +1,7 @@
 package com.example.carddeck
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.os.Looper
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.button.MaterialButton
@@ -32,6 +34,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var exerciseText: TextView
     private lateinit var summaryText: TextView
     private lateinit var instructionText: TextView
+    private lateinit var backButton: MaterialButton
+    private lateinit var endButton: MaterialButton
     private lateinit var backToMenuButton: MaterialButton
     private lateinit var konfettiView: KonfettiView
     private val deckManager = DeckManager()
@@ -40,9 +44,11 @@ class MainActivity : AppCompatActivity() {
     private var shuffledCards: List<Card> = emptyList()
     private var currentCardIndex = 0
     private var startTime: Long = 0
+    private var pausedElapsedTime: Long = 0
     private var isTimerRunning = false
     private var isCountdownRunning = false
     private var isWorkoutComplete = false
+    private var isWorkoutIncomplete = false
     private val handler = Handler(Looper.getMainLooper())
 
     // Track reps per exercise
@@ -78,6 +84,8 @@ class MainActivity : AppCompatActivity() {
         exerciseText = findViewById(R.id.exerciseText)
         summaryText = findViewById(R.id.summaryText)
         instructionText = findViewById(R.id.instructionText)
+        backButton = findViewById(R.id.backButton)
+        endButton = findViewById(R.id.endButton)
         backToMenuButton = findViewById(R.id.backToMenuButton)
         konfettiView = findViewById(R.id.konfettiView)
 
@@ -109,8 +117,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        backButton.setOnClickListener {
+            showPreviousCard()
+        }
+
+        endButton.setOnClickListener {
+            showEndWorkoutDialog()
+        }
+
         backToMenuButton.setOnClickListener {
-            showMenuScreen()
+            showBackToMenuDialog()
         }
     }
 
@@ -130,6 +146,7 @@ class MainActivity : AppCompatActivity() {
         shuffledCards = deckManager.shuffle()
         currentCardIndex = 0
         isWorkoutComplete = false
+        isWorkoutIncomplete = false
         timerText.text = "00:00.0"
 
         // Reset rep counts
@@ -323,6 +340,87 @@ class MainActivity : AppCompatActivity() {
             .scaleY(1f)
             .setDuration(200)
             .start()
+    }
+
+    private fun showPreviousCard() {
+        if (currentCardIndex > 0) {
+            currentCardIndex--
+            displayCurrentCard()
+        }
+    }
+
+    private fun showEndWorkoutDialog() {
+        // Pause timer
+        isTimerRunning = false
+        pausedElapsedTime = System.currentTimeMillis() - startTime
+
+        AlertDialog.Builder(this)
+            .setTitle("End Workout")
+            .setMessage("Are you sure you want to end your workout? This will not be saved to your workout history.")
+            .setPositiveButton("Yes") { _, _ ->
+                endWorkoutEarly()
+            }
+            .setNegativeButton("No") { _, _ ->
+                // Resume timer
+                startTime = System.currentTimeMillis() - pausedElapsedTime
+                isTimerRunning = true
+                handler.post(timerRunnable)
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    private fun endWorkoutEarly() {
+        isWorkoutComplete = true
+        isWorkoutIncomplete = true
+        val elapsedMillis = pausedElapsedTime
+        val seconds = (elapsedMillis / 1000) % 60
+        val minutes = (elapsedMillis / 1000) / 60
+        val timeString = String.format("%02d:%02d", minutes, seconds)
+
+        // Hide card and exercise, show summary
+        cardDisplay.visibility = View.GONE
+        exerciseText.visibility = View.GONE
+        instructionText.visibility = View.GONE
+        summaryText.visibility = View.VISIBLE
+
+        // Build summary text
+        val prefs = getSharedPreferences("GotchBible", Context.MODE_PRIVATE)
+        val clubsExercise = prefs.getString("CLUBS", "Push-up") ?: "Push-up"
+        val heartsExercise = prefs.getString("HEARTS", "Squat") ?: "Squat"
+        val spadesExercise = prefs.getString("SPADES", "Sit-up") ?: "Sit-up"
+        val diamondsExercise = prefs.getString("DIAMONDS", "Burpee") ?: "Burpee"
+
+        val summary = """
+            Workout Ended
+            Time: $timeString
+            Cards completed: $currentCardIndex of ${shuffledCards.size}
+
+            Total Reps:
+            $clubsExercise: ${repCounts[Card.Suit.CLUBS]}
+            $heartsExercise: ${repCounts[Card.Suit.HEARTS]}
+            $spadesExercise: ${repCounts[Card.Suit.SPADES]}
+            $diamondsExercise: ${repCounts[Card.Suit.DIAMONDS]}
+
+            This workout was not saved to your history.
+        """.trimIndent()
+
+        summaryText.text = summary
+    }
+
+    private fun showBackToMenuDialog() {
+        if (!isWorkoutComplete) {
+            AlertDialog.Builder(this)
+                .setTitle("Back to Menu")
+                .setMessage("Are you sure you want to go back to the menu? Your current workout will not be saved.")
+                .setPositiveButton("Yes") { _, _ ->
+                    showMenuScreen()
+                }
+                .setNegativeButton("No", null)
+                .show()
+        } else {
+            showMenuScreen()
+        }
     }
 
     override fun onDestroy() {
