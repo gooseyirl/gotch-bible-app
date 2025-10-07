@@ -21,6 +21,8 @@
         <item name="editTextColor">@color/text_primary</item>
         <!-- Button style -->
         <item name="materialButtonStyle">@style/Widget.App.Button</item>
+        <!-- Dialog theme -->
+        <item name="alertDialogTheme">@style/Theme.App.Dialog</item>
     </style>
 
     <!-- Custom button style matching screenshot -->
@@ -30,5 +32,23 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textStyle">bold</item>
         <item name="cornerRadius">8dp</item>
+    </style>
+
+    <!-- Dark dialog theme -->
+    <style name="Theme.App.Dialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorPrimary">@color/orange_accent</item>
+        <item name="colorSecondary">@color/orange_accent</item>
+        <item name="android:background">@color/dark_background</item>
+        <item name="backgroundTint">@color/dark_background</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_primary</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.App.Button.Dialog</item>
+    </style>
+
+    <!-- Dialog button style -->
+    <style name="Widget.App.Button.Dialog" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/orange_accent</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 </resources>
