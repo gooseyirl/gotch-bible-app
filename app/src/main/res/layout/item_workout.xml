@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardElevation="4dp"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="#2A2A2A">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,6 +21,7 @@
             android:text="1"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:textColor="@color/orange_accent"
             android:gravity="center" />
 
         <LinearLayout
@@ -35,7 +37,8 @@
                 android:layout_height="wrap_content"
                 android:text="05:23"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
 
             <TextView
                 android:id="@+id/dateText"
@@ -43,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:text="Jan 1, 2024"
                 android:textSize="14sp"
-                android:alpha="0.7" />
+                android:textColor="@color/text_secondary" />
 
         </LinearLayout>
 

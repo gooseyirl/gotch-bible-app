@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
+    <!-- Theme colors matching screenshot -->
+    <color name="dark_background">#1E1E1E</color>
+    <color name="orange_accent">#F4A261</color>
+    <color name="orange_accent_dark">#E89350</color>
+    <color name="input_background">#797979</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="text_primary">#FFFFFFFF</color>
+    <color name="text_secondary">#B0B0B0</color>
 
     <!-- Card colors -->
     <color name="card_red">#FFD32F2F</color>
     <color name="card_black">#FF212121</color>
     <color name="card_background">#FFFFFFFF</color>
-    <color name="background">#FFF5F5F5</color>
-    <color name="text_primary">#FF212121</color>
+    <color name="background">#1E1E1E</color>
+
+    <!-- Legacy colors for compatibility -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#F4A261</color>
+    <color name="purple_700">#E89350</color>
+    <color name="teal_200">#F4A261</color>
+    <color name="teal_700">#E89350</color>
 </resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Using system default sans-serif bold for modern look -->
+    <!-- To use a custom font like Poppins, download the .ttf files and place them in res/font/ -->
+</font-family>
