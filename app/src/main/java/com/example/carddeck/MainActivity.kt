@@ -12,6 +12,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.button.MaterialButton
+import nl.dionsegijn.konfetti.core.Party
+import nl.dionsegijn.konfetti.core.Position
+import nl.dionsegijn.konfetti.core.emitter.Emitter
+import nl.dionsegijn.konfetti.xml.KonfettiView
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,7 +33,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var summaryText: TextView
     private lateinit var instructionText: TextView
     private lateinit var backToMenuButton: MaterialButton
+    private lateinit var konfettiView: KonfettiView
     private val deckManager = DeckManager()
+    private lateinit var soundPlayer: SoundPlayer
 
     private var shuffledCards: List<Card> = emptyList()
     private var currentCardIndex = 0
@@ -72,6 +79,10 @@ class MainActivity : AppCompatActivity() {
         summaryText = findViewById(R.id.summaryText)
         instructionText = findViewById(R.id.instructionText)
         backToMenuButton = findViewById(R.id.backToMenuButton)
+        konfettiView = findViewById(R.id.konfettiView)
+
+        // Initialize sound player
+        soundPlayer = SoundPlayer(this)
 
         setupClickListeners()
     }
@@ -147,6 +158,9 @@ class MainActivity : AppCompatActivity() {
 
         fun showCount() {
             if (count > 0) {
+                // Play click sound
+                soundPlayer.playClick()
+
                 // Animate countdown number
                 cardDisplay.alpha = 0f
                 cardDisplay.scaleX = 0.5f
@@ -192,6 +206,9 @@ class MainActivity : AppCompatActivity() {
             val currentCard = shuffledCards[currentCardIndex]
             repCounts[currentCard.suit] = repCounts[currentCard.suit]!! + currentCard.rank.value
 
+            // Play click sound
+            soundPlayer.playClick()
+
             currentCardIndex++
             displayCurrentCard()
         } else if (currentCardIndex == shuffledCards.size - 1) {
@@ -233,6 +250,10 @@ class MainActivity : AppCompatActivity() {
 
             summaryText.text = summary
 
+            // Play celebration sound and show confetti
+            soundPlayer.playCelebration()
+            showCelebration()
+
             // Save workout record
             val workout = WorkoutRecord(
                 timestamp = startTime,
@@ -248,6 +269,20 @@ class MainActivity : AppCompatActivity() {
             )
             WorkoutStorage.saveWorkout(this, workout)
         }
+    }
+
+    private fun showCelebration() {
+        val party = Party(
+            speed = 0f,
+            maxSpeed = 30f,
+            damping = 0.9f,
+            spread = 360,
+            colors = listOf(0xfce18a, 0xff726d, 0xf4306d, 0xb48def),
+            emitter = Emitter(duration = 3, TimeUnit.SECONDS).max(300),
+            position = Position.Relative(0.5, 0.3)
+        )
+
+        konfettiView.start(party)
     }
 
     private fun displayCurrentCard() {
@@ -294,5 +329,6 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         isTimerRunning = false
         handler.removeCallbacks(timerRunnable)
+        soundPlayer.release()
     }
 }

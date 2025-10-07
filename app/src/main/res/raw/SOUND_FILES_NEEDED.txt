@@ -1,0 +1,23 @@
+Sound files needed for this app:
+
+1. click.mp3 or click.wav
+   - A short, low click sound
+   - Used for countdown timer and card changes
+   - Duration: ~100-200ms
+
+2. celebration.mp3 or celebration.wav
+   - A celebratory/success sound
+   - Used when workout is completed
+   - Duration: ~1-2 seconds
+
+To add these sounds:
+1. Find or create the sound files
+2. Place them in this directory (app/src/main/res/raw/)
+3. Name them: click.mp3 and celebration.mp3 (or .wav, .ogg)
+4. Delete this SOUND_FILES_NEEDED.txt file
+
+Note: For now, the app will work without sounds (sound playback will be skipped if files are missing).
+You can use free sound resources from:
+- https://freesound.org/
+- https://www.zapsplat.com/
+- Create your own using Audacity or similar tools
