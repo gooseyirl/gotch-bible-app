@@ -171,7 +171,7 @@ class MainActivity : AppCompatActivity() {
     private fun startCountdown() {
         isCountdownRunning = true
         cardDisplay.visibility = View.VISIBLE
-        cardDisplay.setTextColor(Color.BLACK)
+        cardDisplay.setTextColor(Color.WHITE)
 
         // Remove card background/border for countdown
         cardDisplay.setBackgroundColor(Color.TRANSPARENT)
