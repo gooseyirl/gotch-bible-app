@@ -180,6 +180,21 @@ class MainActivity : AppCompatActivity() {
             """.trimIndent()
 
             summaryText.text = summary
+
+            // Save workout record
+            val workout = WorkoutRecord(
+                timestamp = startTime,
+                durationMillis = elapsedMillis,
+                clubsReps = repCounts[Card.Suit.CLUBS] ?: 0,
+                heartsReps = repCounts[Card.Suit.HEARTS] ?: 0,
+                spadesReps = repCounts[Card.Suit.SPADES] ?: 0,
+                diamondsReps = repCounts[Card.Suit.DIAMONDS] ?: 0,
+                clubsExercise = clubsExercise,
+                heartsExercise = heartsExercise,
+                spadesExercise = spadesExercise,
+                diamondsExercise = diamondsExercise
+            )
+            WorkoutStorage.saveWorkout(this, workout)
         }
     }
 
