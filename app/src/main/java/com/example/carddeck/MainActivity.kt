@@ -388,6 +388,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun endWorkoutEarly() {
+        // Include current card in the count if not already counted
+        if (!cardsCompleted.contains(currentCardIndex)) {
+            val currentCard = shuffledCards[currentCardIndex]
+            repCounts[currentCard.suit] = repCounts[currentCard.suit]!! + currentCard.rank.value
+            cardsCompleted.add(currentCardIndex)
+        }
+
         isWorkoutComplete = true
         isWorkoutIncomplete = true
         val elapsedMillis = pausedElapsedTime
