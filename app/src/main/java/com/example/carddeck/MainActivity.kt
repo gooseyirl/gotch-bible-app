@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -135,6 +136,7 @@ class MainActivity : AppCompatActivity() {
     private fun showMenuScreen() {
         isTimerRunning = false
         handler.removeCallbacks(timerRunnable)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         menuLayout.visibility = View.VISIBLE
         workoutLayout.visibility = View.GONE
     }
@@ -142,6 +144,7 @@ class MainActivity : AppCompatActivity() {
     private fun showWorkoutScreen() {
         menuLayout.visibility = View.GONE
         workoutLayout.visibility = View.VISIBLE
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     private fun startNewDeck() {
