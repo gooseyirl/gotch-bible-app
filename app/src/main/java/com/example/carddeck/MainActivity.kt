@@ -7,6 +7,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.SpannableString
+import android.text.style.RelativeSizeSpan
 import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
@@ -33,7 +35,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var timerText: TextView
     private lateinit var progressText: TextView
     private lateinit var exerciseText: TextView
-    private lateinit var summaryText: TextView
+    private lateinit var summaryScrollView: View
+    private lateinit var congratsTitle: TextView
+    private lateinit var completionMessage: TextView
+    private lateinit var summaryClubsExercise: TextView
+    private lateinit var summaryClubsReps: TextView
+    private lateinit var summaryHeartsExercise: TextView
+    private lateinit var summaryHeartsReps: TextView
+    private lateinit var summarySpadesExercise: TextView
+    private lateinit var summarySpadesReps: TextView
+    private lateinit var summaryDiamondsExercise: TextView
+    private lateinit var summaryDiamondsReps: TextView
     private lateinit var instructionText: TextView
     private lateinit var backButton: MaterialButton
     private lateinit var endButton: MaterialButton
@@ -85,7 +97,17 @@ class MainActivity : AppCompatActivity() {
         timerText = findViewById(R.id.timerText)
         progressText = findViewById(R.id.progressText)
         exerciseText = findViewById(R.id.exerciseText)
-        summaryText = findViewById(R.id.summaryText)
+        summaryScrollView = findViewById(R.id.summaryScrollView)
+        congratsTitle = findViewById(R.id.congratsTitle)
+        completionMessage = findViewById(R.id.completionMessage)
+        summaryClubsExercise = findViewById(R.id.summaryClubsExercise)
+        summaryClubsReps = findViewById(R.id.summaryClubsReps)
+        summaryHeartsExercise = findViewById(R.id.summaryHeartsExercise)
+        summaryHeartsReps = findViewById(R.id.summaryHeartsReps)
+        summarySpadesExercise = findViewById(R.id.summarySpadesExercise)
+        summarySpadesReps = findViewById(R.id.summarySpadesReps)
+        summaryDiamondsExercise = findViewById(R.id.summaryDiamondsExercise)
+        summaryDiamondsReps = findViewById(R.id.summaryDiamondsReps)
         instructionText = findViewById(R.id.instructionText)
         backButton = findViewById(R.id.backButton)
         endButton = findViewById(R.id.endButton)
@@ -153,7 +175,6 @@ class MainActivity : AppCompatActivity() {
         highestCardReached = 0
         isWorkoutComplete = false
         isWorkoutIncomplete = false
-        timerText.text = "00:00.0"
 
         // Reset rep counts
         repCounts.clear()
@@ -161,7 +182,11 @@ class MainActivity : AppCompatActivity() {
         cardsCompleted.clear()
 
         // Reset UI
-        summaryText.visibility = View.GONE
+        timerText.text = "00:00.0"
+        timerText.visibility = View.VISIBLE
+        progressText.text = "0 / 52"
+        progressText.visibility = View.VISIBLE
+        summaryScrollView.visibility = View.GONE
         instructionText.visibility = View.GONE
         exerciseText.visibility = View.GONE
         backButton.visibility = View.VISIBLE
@@ -259,33 +284,36 @@ class MainActivity : AppCompatActivity() {
             val minutes = (elapsedMillis / 1000) / 60
             val timeString = String.format("%02d:%02d", minutes, seconds)
 
-            // Hide card and exercise, show summary
+            // Hide card, exercise, timer, and progress, show summary
             cardDisplay.visibility = View.GONE
             exerciseText.visibility = View.GONE
             instructionText.visibility = View.GONE
-            summaryText.visibility = View.VISIBLE
+            timerText.visibility = View.GONE
+            progressText.visibility = View.GONE
+            summaryScrollView.visibility = View.VISIBLE
             backButton.visibility = View.GONE
             endButton.visibility = View.GONE
 
-            // Build summary text
+            // Build summary
             val prefs = getSharedPreferences("GotchBible", Context.MODE_PRIVATE)
             val clubsExercise = prefs.getString("CLUBS", "Push-up") ?: "Push-up"
             val heartsExercise = prefs.getString("HEARTS", "Squat") ?: "Squat"
             val spadesExercise = prefs.getString("SPADES", "Sit-up") ?: "Sit-up"
             val diamondsExercise = prefs.getString("DIAMONDS", "Burpee") ?: "Burpee"
 
-            val summary = """
-                Congratulations!
-                You completed the deck in $timeString!
+            completionMessage.text = "You completed the deck in $timeString!"
 
-                Total Reps:
-                $clubsExercise: ${repCounts[Card.Suit.CLUBS]}
-                $heartsExercise: ${repCounts[Card.Suit.HEARTS]}
-                $spadesExercise: ${repCounts[Card.Suit.SPADES]}
-                $diamondsExercise: ${repCounts[Card.Suit.DIAMONDS]}
-            """.trimIndent()
+            summaryClubsExercise.text = clubsExercise
+            summaryClubsReps.text = "${repCounts[Card.Suit.CLUBS]} reps"
 
-            summaryText.text = summary
+            summaryHeartsExercise.text = heartsExercise
+            summaryHeartsReps.text = "${repCounts[Card.Suit.HEARTS]} reps"
+
+            summarySpadesExercise.text = spadesExercise
+            summarySpadesReps.text = "${repCounts[Card.Suit.SPADES]} reps"
+
+            summaryDiamondsExercise.text = diamondsExercise
+            summaryDiamondsReps.text = "${repCounts[Card.Suit.DIAMONDS]} reps"
 
             // Play celebration sound and show confetti
             soundPlayer.playCelebration()
@@ -342,7 +370,17 @@ class MainActivity : AppCompatActivity() {
         cardDisplay.scaleX = 0.8f
         cardDisplay.scaleY = 0.8f
 
-        cardDisplay.text = card.toString()
+        // Format card text with smaller suit symbol
+        val cardText = card.toString()
+        val spannableString = SpannableString(cardText)
+        val rankLength = card.rank.display.length
+        spannableString.setSpan(
+            RelativeSizeSpan(0.85f),
+            rankLength,
+            cardText.length,
+            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        cardDisplay.text = spannableString
 
         // Set card color
         val textColor = when (card.suit.color) {
@@ -405,36 +443,37 @@ class MainActivity : AppCompatActivity() {
         val minutes = (elapsedMillis / 1000) / 60
         val timeString = String.format("%02d:%02d", minutes, seconds)
 
-        // Hide card and exercise, show summary
+        // Hide card, exercise, timer, and progress, show summary
         cardDisplay.visibility = View.GONE
         exerciseText.visibility = View.GONE
         instructionText.visibility = View.GONE
-        summaryText.visibility = View.VISIBLE
+        timerText.visibility = View.GONE
+        progressText.visibility = View.GONE
+        summaryScrollView.visibility = View.VISIBLE
         backButton.visibility = View.GONE
         endButton.visibility = View.GONE
 
-        // Build summary text
+        // Build summary
         val prefs = getSharedPreferences("GotchBible", Context.MODE_PRIVATE)
         val clubsExercise = prefs.getString("CLUBS", "Push-up") ?: "Push-up"
         val heartsExercise = prefs.getString("HEARTS", "Squat") ?: "Squat"
         val spadesExercise = prefs.getString("SPADES", "Sit-up") ?: "Sit-up"
         val diamondsExercise = prefs.getString("DIAMONDS", "Burpee") ?: "Burpee"
 
-        val summary = """
-            Workout Ended
-            Time: $timeString
-            Cards completed: ${cardsCompleted.size} of ${shuffledCards.size}
+        congratsTitle.text = "Workout Ended"
+        completionMessage.text = "Time: $timeString • Cards: ${cardsCompleted.size}/${shuffledCards.size}"
 
-            Total Reps:
-            $clubsExercise: ${repCounts[Card.Suit.CLUBS]}
-            $heartsExercise: ${repCounts[Card.Suit.HEARTS]}
-            $spadesExercise: ${repCounts[Card.Suit.SPADES]}
-            $diamondsExercise: ${repCounts[Card.Suit.DIAMONDS]}
+        summaryClubsExercise.text = clubsExercise
+        summaryClubsReps.text = "${repCounts[Card.Suit.CLUBS]} reps"
 
-            This workout was not saved to your history.
-        """.trimIndent()
+        summaryHeartsExercise.text = heartsExercise
+        summaryHeartsReps.text = "${repCounts[Card.Suit.HEARTS]} reps"
 
-        summaryText.text = summary
+        summarySpadesExercise.text = spadesExercise
+        summarySpadesReps.text = "${repCounts[Card.Suit.SPADES]} reps"
+
+        summaryDiamondsExercise.text = diamondsExercise
+        summaryDiamondsReps.text = "${repCounts[Card.Suit.DIAMONDS]} reps"
     }
 
     private fun showBackToMenuDialog() {
