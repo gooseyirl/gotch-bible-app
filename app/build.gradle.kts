@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.gooseco.gotchbible"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.gooseco.gotchbible"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
 
         val reckonVersion = rootProject.version.toString()
         versionName = reckonVersion
