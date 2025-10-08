@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.carddeck"
+    namespace = "com.gooseco.gotchbible"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.carddeck"
+        applicationId = "com.gooseco.gotchbible"
         minSdk = 24
         targetSdk = 34
 
@@ -29,6 +29,13 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+    }
+
+    applicationVariants.all {
+        outputs.all {
+            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName =
+                "gotch-bible-${versionName}-${buildType.name}.apk"
         }
     }
 

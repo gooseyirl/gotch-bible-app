@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./gradlew:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nFix white-on-white text in Settings by forcing consistent light theme\n\nChanged theme from DayNight to Light to prevent automatic dark mode switching. Added explicit text colors to all TextInputEditText fields and enforced consistent background/text colors throughout the app regardless of device dark mode settings.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git commit:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

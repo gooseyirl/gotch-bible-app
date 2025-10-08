@@ -1,4 +1,4 @@
-package com.example.carddeck
+package com.gooseco.gotchbible
 
 class DeckManager {
     private val deck = mutableListOf<Card>()

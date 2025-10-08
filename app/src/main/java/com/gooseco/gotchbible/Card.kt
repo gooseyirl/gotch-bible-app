@@ -1,4 +1,4 @@
-package com.example.carddeck
+package com.gooseco.gotchbible
 
 data class Card(
     val suit: Suit,

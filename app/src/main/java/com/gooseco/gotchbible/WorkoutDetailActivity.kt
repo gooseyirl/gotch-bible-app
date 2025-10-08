@@ -1,4 +1,4 @@
-package com.example.carddeck
+package com.gooseco.gotchbible
 
 import android.os.Bundle
 import android.widget.TextView

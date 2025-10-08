@@ -1,4 +1,4 @@
-package com.example.carddeck
+package com.gooseco.gotchbible
 
 import android.content.Context
 import android.content.DialogInterface
