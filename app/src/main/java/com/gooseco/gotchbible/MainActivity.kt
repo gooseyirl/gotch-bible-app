@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var startButton: MaterialButton
     private lateinit var pastWorkoutsButton: MaterialButton
     private lateinit var settingsButton: MaterialButton
+    private lateinit var pageCorner: View
 
     private lateinit var cardDisplay: TextView
     private lateinit var timerText: TextView
@@ -90,6 +91,7 @@ class MainActivity : AppCompatActivity() {
         startButton = findViewById(R.id.startButton)
         pastWorkoutsButton = findViewById(R.id.pastWorkoutsButton)
         settingsButton = findViewById(R.id.settingsButton)
+        pageCorner = findViewById(R.id.pageCorner)
 
         // Workout views
         workoutLayout = findViewById(R.id.workoutLayout)
@@ -136,6 +138,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        pageCorner.setOnClickListener {
+            val intent = Intent(this, DonationActivity::class.java)
+            startActivity(intent)
+        }
+
         workoutLayout.setOnClickListener {
             if (!isCountdownRunning && !isWorkoutComplete && currentCardIndex < shuffledCards.size) {
                 showNextCard()
@@ -161,11 +168,13 @@ class MainActivity : AppCompatActivity() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         menuLayout.visibility = View.VISIBLE
         workoutLayout.visibility = View.GONE
+        pageCorner.visibility = View.VISIBLE
     }
 
     private fun showWorkoutScreen() {
         menuLayout.visibility = View.GONE
         workoutLayout.visibility = View.VISIBLE
+        pageCorner.visibility = View.GONE
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 

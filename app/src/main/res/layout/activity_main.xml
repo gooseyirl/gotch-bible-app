@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@drawable/background_gradient"
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
@@ -54,6 +54,20 @@
             android:layout_margin="12dp" />
 
     </LinearLayout>
+
+    <!-- Coffee icon (clickable donation button in bottom right) -->
+    <ImageView
+        android:id="@+id/pageCorner"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:src="@drawable/coffee_icon"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="8dp"
+        android:layout_margin="16dp"
+        android:contentDescription="Support the developer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Workout Layout -->
     <androidx.constraintlayout.widget.ConstraintLayout

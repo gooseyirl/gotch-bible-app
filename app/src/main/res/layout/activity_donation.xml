@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    android:fitsSystemWindows="true"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Support the Developer"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="This is a completely free application with no ads or tracking."
+            android:textSize="18sp"
+            android:textColor="@color/text_primary"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="If you like the app and want to support the developer, this can be done via PayPal"
+            android:textSize="18sp"
+            android:textColor="@color/text_primary"
+            android:gravity="center"
+            android:layout_marginBottom="32dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <ImageView
+                android:layout_width="280dp"
+                android:layout_height="280dp"
+                android:src="@drawable/pp_qrcode"
+                android:scaleType="fitCenter"
+                android:padding="16dp"
+                android:contentDescription="PayPal QR Code" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/paypalLinkButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PayPal Link"
+            android:textSize="16sp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp" />
+
+    </LinearLayout>
+
+</ScrollView>
