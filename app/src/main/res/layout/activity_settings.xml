@@ -39,22 +39,37 @@
             android:textColor="@color/text_primary"
             android:layout_marginBottom="8dp" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/text_primary"
-            app:hintTextColor="@color/text_primary">
+            app:cardBackgroundColor="@color/input_box_background"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="4dp"
+            app:strokeWidth="0dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/clubsExerciseInput"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/clubsInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Exercise name"
-                android:inputType="text"
-                android:textColor="@color/text_primary" />
-        </com.google.android.material.textfield.TextInputLayout>
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/clubsExerciseInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:gravity="center_vertical"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:inputType="text"
+                    android:textColor="@color/text_primary"
+                    android:background="@android:color/transparent" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Hearts Exercise -->
         <TextView
@@ -65,22 +80,37 @@
             android:textColor="@color/text_primary"
             android:layout_marginBottom="8dp" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/text_primary"
-            app:hintTextColor="@color/text_primary">
+            app:cardBackgroundColor="@color/input_box_background"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="4dp"
+            app:strokeWidth="0dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/heartsExerciseInput"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/heartsInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Exercise name"
-                android:inputType="text"
-                android:textColor="@color/text_primary" />
-        </com.google.android.material.textfield.TextInputLayout>
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/heartsExerciseInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:gravity="center_vertical"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:inputType="text"
+                    android:textColor="@color/text_primary"
+                    android:background="@android:color/transparent" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Spades Exercise -->
         <TextView
@@ -91,22 +121,37 @@
             android:textColor="@color/text_primary"
             android:layout_marginBottom="8dp" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/text_primary"
-            app:hintTextColor="@color/text_primary">
+            app:cardBackgroundColor="@color/input_box_background"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="4dp"
+            app:strokeWidth="0dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/spadesExerciseInput"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/spadesInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Exercise name"
-                android:inputType="text"
-                android:textColor="@color/text_primary" />
-        </com.google.android.material.textfield.TextInputLayout>
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/spadesExerciseInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:gravity="center_vertical"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:inputType="text"
+                    android:textColor="@color/text_primary"
+                    android:background="@android:color/transparent" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Diamonds Exercise -->
         <TextView
@@ -117,22 +162,37 @@
             android:textColor="@color/text_primary"
             android:layout_marginBottom="8dp" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/text_primary"
-            app:hintTextColor="@color/text_primary">
+            app:cardBackgroundColor="@color/input_box_background"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="4dp"
+            app:strokeWidth="0dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/diamondsExerciseInput"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/diamondsInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Exercise name"
-                android:inputType="text"
-                android:textColor="@color/text_primary" />
-        </com.google.android.material.textfield.TextInputLayout>
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/diamondsExerciseInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:gravity="center_vertical"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:inputType="text"
+                    android:textColor="@color/text_primary"
+                    android:background="@android:color/transparent" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/saveButton"

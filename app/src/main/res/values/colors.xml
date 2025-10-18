@@ -9,6 +9,7 @@
     <color name="black">#FF000000</color>
     <color name="text_primary">#FFFFFFFF</color>
     <color name="text_secondary">#B0B0B0</color>
+    <color name="input_box_background">#363738</color>
 
     <!-- Card colors -->
     <color name="card_red">#FFD32F2F</color>

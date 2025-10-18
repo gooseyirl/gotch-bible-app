@@ -24,6 +24,9 @@
         <item name="android:textColorSecondary">@color/text_secondary</item>
         <item name="android:textColorHint">@color/text_secondary</item>
         <item name="editTextColor">@color/text_primary</item>
+        <!-- Text input layout colors -->
+        <item name="colorSurface">@color/dark_background</item>
+        <item name="colorOnSurface">@color/text_primary</item>
         <!-- Button style -->
         <item name="materialButtonStyle">@style/Widget.App.Button</item>
         <!-- Dialog theme -->

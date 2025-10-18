@@ -1,11 +1,14 @@
 package com.gooseco.gotchbible
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -25,11 +28,23 @@ class SettingsActivity : AppCompatActivity() {
         diamondsInput = findViewById(R.id.diamondsExerciseInput)
         saveButton = findViewById(R.id.saveButton)
 
+        // Apply background colors to TextInputLayouts
+        applyInputBackgrounds()
+
         loadExercises()
 
         saveButton.setOnClickListener {
             saveExercises()
         }
+    }
+
+    private fun applyInputBackgrounds() {
+        val backgroundColor = ColorStateList.valueOf(Color.parseColor("#363738"))
+
+        findViewById<TextInputLayout>(R.id.clubsInputLayout)?.setBoxBackgroundColorStateList(backgroundColor)
+        findViewById<TextInputLayout>(R.id.heartsInputLayout)?.setBoxBackgroundColorStateList(backgroundColor)
+        findViewById<TextInputLayout>(R.id.spadesInputLayout)?.setBoxBackgroundColorStateList(backgroundColor)
+        findViewById<TextInputLayout>(R.id.diamondsInputLayout)?.setBoxBackgroundColorStateList(backgroundColor)
     }
 
     private fun loadExercises() {
