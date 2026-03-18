@@ -25,5 +25,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CardDeck"
+rootProject.name = "GotchBible"
 include(":app")
