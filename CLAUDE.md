@@ -8,7 +8,7 @@ Gotch Bible is an Android workout app based on Karl Gotch's legendary deck-of-ca
 
 **Package:** `com.gooseco.gotchbible`
 **Min SDK:** API 24 (Android 7.0)
-**Target SDK:** API 35 (Android 15)
+**Target SDK:** API 36 (Android 16)
 **Language:** Kotlin
 **Build System:** Gradle with Kotlin DSL
 
